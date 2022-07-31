@@ -11,8 +11,8 @@ def get_partner_me():
 
 
 def get_partner_payments():
-    return get_mockfile('partners_me.json')
+    return get_mockfile('partner_payments.json')
 
 
 def get_partner_trips():
-    return get_mockfile('partners_me.json')
+    return get_mockfile('partner_trips.json')
