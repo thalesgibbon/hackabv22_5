@@ -20,3 +20,9 @@ def storage_partnerinfo(driver_id):
     json.dump(partners_trips, out_file)
 
     print('export feito com sucesso')
+
+
+if __name__ == "__main__":
+    storage_partnerinfo('ID001')
+    storage_partnerinfo('ID002')
+    storage_partnerinfo('ID003')
