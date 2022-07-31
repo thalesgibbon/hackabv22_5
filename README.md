@@ -8,5 +8,9 @@ jornada da solução
 
 # 4. após login bem sucedido, cliente é redirecionado para nosso site com tela de sucesso
 
-# 5. geramos um score daquele cliente que sera acessado pela BV/Outros com objetivo de entregar uma taxa mais atrativa.
+# 5. nos buscamos e armazenamos as informacoes dos clientes
+
+# 6. geramos um score daquele cliente que sera acessado pela BV/Outros com objetivo de entregar uma taxa mais atrativa.
+
+# 7. os scores dos clientes serao acessados atraves de uma API
 
