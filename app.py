@@ -1,5 +1,5 @@
-from flask import Flask, request, Response
-from random import randrange
+from flask import Flask, request
+from machine_leaning import generate_score
 import os
 
 
@@ -12,7 +12,7 @@ def index():
     if not driver_id:
         return {'driver_id': driver_id, 'score_good_driver': None, 'msg': 'driver_id obrigatorio'}, 400
     elif driver_id in os.listdir('exports'):
-        score_good_driver = randrange(100)
+        score_good_driver = generate_score(driver_id)
         result = {'driver_id': driver_id, 'score_good_driver': score_good_driver, 'msg': 'ok'}
         return result, 200
     else:
