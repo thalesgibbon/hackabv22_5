@@ -1,28 +1,36 @@
+# SCRIPT AUXILIAR PARA CRIAR RECURSOS NA CLOUD A PARTIR DO SDK PYTHON NO NOTEBOOK
+
+BKT = 'bkt-hackabv22-5'
+DATASET = 'uber'
+TABLE = 'partners_me'
+PROJECT = 'hacka-5'
+DRIVER_ID = 'ID001'
+
 
 ''' subindo arquivos no storage '''
 # !pip install gcloud --user
 from gcloud import storage
 client = storage.Client()
-bucket = client.bucket('bkt-hackabv22-5')
+bucket = client.bucket(BKT)
 bucket.location = 'us'
 bucket.create()
 bucket.exists()
-blob = bucket.blob('ID001/partners_me.json')
-blob.upload_from_filename('partners_me.json')
+blob = bucket.blob(f'{DRIVER_ID}/{TABLE}.json')
+blob.upload_from_filename(f'{TABLE}.json')
 # !gsutil ls -r 'gs://bkt-hackabv22-5/'
 
 
 ''' criando dataset no bigquery '''
 from google.cloud import bigquery
 client = bigquery.Client()
-dataset = bigquery.Dataset('hacka-5.uber')
+dataset = bigquery.Dataset(f'{PROJECT}.{DATASET}')
 dataset = client.create_dataset(dataset, timeout=30)
 
 
 ''' criando tabela no bigquery '''
-dataset_ref = client.dataset('uber')
-table_ref = bigquery.TableReference(dataset_ref, 'partners_me')
-schemafield_col1 = bigquery.schema.SchemaField("driver_id","STRING")
+dataset_ref = client.dataset(DATASET)
+table_ref = bigquery.TableReference(dataset_ref, TABLE)
+schemafield_col1 = bigquery.schema.SchemaField("driver_id","INTEGER")
 schemafield_col2 = bigquery.schema.SchemaField("first_name","INTEGER")
 schemafield_col3 = bigquery.schema.SchemaField("last_name","STRING")
 schemafield_col4 = bigquery.schema.SchemaField("email","STRING")
@@ -65,6 +73,18 @@ client.create_table(table)
 
 
 ''' fazendo query no bigquery '''
-query = """SELECT * FROM `hacka-5.uber.partners_me` """
+query = f"""SELECT * FROM `{PROJECT}.{DATASET}.{TABLE}` """
 job = client.query(query)
 df = job.to_dataframe()
+
+
+''' adicionar registro na tabela bigquery '''
+job_config = bigquery.LoadJobConfig(schema=schemafield_list, source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON, )
+uri = f"gs://{BKT}/{DRIVER_ID}/{TABLE}.json"
+load_job = client.load_table_from_uri(
+    uri,
+    f'{PROJECT}.{DATASET}.{TABLE}',
+    location="US",
+    job_config=job_config,
+)
+load_job.result()
