@@ -1,9 +1,9 @@
-import json
-
+# SCRIPT RESERVADO PARA A CRIACAO DO SCORE
 # TODO
 # apos adquirir volume de + 50 mil dados de motoristas de uber,
 # subir os dados no vertex e criar o modelo de machine learning para bons motoristas
 # solicitamos o access token para uber, porem nao recebemos a tempo do hackathon
+import json
 
 
 def generate_score(driver_id):

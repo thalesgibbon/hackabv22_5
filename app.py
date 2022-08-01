@@ -1,3 +1,7 @@
+# SCRIPT PARA SUBIR O SERVICO DE CONSULTA DOS MOTORISTAS
+# TODO MIGRAR PARA FUNCTION
+# TODO ARMAZENAR OS REGISTROS NO BIGQUERY
+
 from flask import Flask, request
 from machine_leaning import generate_score
 import os
